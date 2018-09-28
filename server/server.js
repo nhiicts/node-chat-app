@@ -13,15 +13,17 @@ const io = socketIO(server);
 app.use(express.static(publicPath));
 
 io.on('connection', socket => {
-  console.log('New user connected');
   socket.emit('newMessage', {
-    from: 'tranhongnhi@gmail.com',
-    text: 'Hey. What is going on.',
-    createdAt: 123
+    from: 'Admin',
+    text: 'Welcome to chat app'
+  })
+  socket.broadcast.emit('newMessage', {
+    from: 'Admin',
+    text: 'New user joined',
   })
   socket.on('createMessage', (message) => {
     console.log('createMessage', message);
-    io.emit('newMessage', {
+    socket.broadcast.emit('newMessage', {
       from: message.from,
       text: message.text,
       createdAt: new Date().getTime()
